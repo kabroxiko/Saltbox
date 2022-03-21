@@ -36,6 +36,7 @@
     - /opt/scripts/tautulli
     - /opt/scripts/torrents
     - /opt/scripts/rclone
+    - /opt/scripts/movie_extra_downloader
 
 - name: Import 'arrpush.py'
   ansible.builtin.get_url:
@@ -123,3 +124,23 @@
     group: "{{ user.name }}"
     mode: "0775"
     force: true
+
+- name: Clone Media Extra Downloader'
+  git:
+    repo: "https://github.com/kabroxiko/Movie-Extra-Downloader"
+    dest: "/opt/scripts/movie_extra_downloader"
+    clone: true
+    version: "master"
+    force: true
+  become: true
+  become_user: "{{ user.name }}"
+  ignore_errors: true
+
+- name: Set MED directory permissions
+  file:
+    dest: "{{ item }}"
+    mode: "0775"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+  with_fileglob:
+    - '/opt/scripts/movie_extra_downloader/*.py'
