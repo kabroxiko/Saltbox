@@ -19,3 +19,8 @@
   ansible.builtin.shell: >
        docker exec {{ radarr_docker_container }} bash -c
        "cd /scripts/movie_extra_downloader/ && apk add py3-pip ffmpeg && pip3 install -r requirements.txt"
+
+- name: Post-Install | Install requirements for SMA scripts
+  ansible.builtin.shell: >
+       docker exec {{ radarr_docker_container }} bash -c
+       "cd /scripts/sickbeard_mp4_automator/setup/ && apk add py3-pip ffmpeg && pip3 install -r requirements.txt"

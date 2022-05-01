@@ -37,6 +37,7 @@
     - /opt/scripts/torrents
     - /opt/scripts/rclone
     - /opt/scripts/movie_extra_downloader
+    - /opt/scripts/sickbeard_mp4_automator
 
 - name: Import 'arrpush.py'
   ansible.builtin.get_url:
@@ -144,3 +145,14 @@
     group: "{{ user.name }}"
   with_fileglob:
     - '/opt/scripts/movie_extra_downloader/*.py'
+
+- name: Clone SMA Conversion/Tagging Automation Script'
+  git:
+    repo: "https://github.com/mdhiggins/sickbeard_mp4_automator"
+    dest: "/opt/scripts/sickbeard_mp4_automator"
+    clone: true
+    version: "master"
+    force: true
+  become: true
+  become_user: "{{ user.name }}"
+  ignore_errors: true
